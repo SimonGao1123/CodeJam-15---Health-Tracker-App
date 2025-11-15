@@ -16,8 +16,7 @@ function UserLoginDisplay ({setDisplayLogin, setUserLoggedIn}) {
 
 
     useEffect(() => {
-        clearAllEntries(setLoginUser, setLoginPass, setRegPass, setRegPass, setConfRegPass);
-        setDisplayMessage("");
+        clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
     }, [ifLoginDisplay]); // if login/register display changes then reset the display message
     return (
         <div className = "main">
@@ -68,8 +67,23 @@ function clearAllEntries (setLoginUser, setLoginPass, setRegUser, setRegPass, se
     setRegPass("");
     setConfRegPass("");
 }
+async function getUserInfo(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/getUser/${id}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    });
+        const data = await response.json();
+        
+        return data.user;
+    } catch (error) {
+        console.log("error in getting user information " + error);
+        return null;
+    }
+}
+
 function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLoginDisplay, setDisplayMessage, setRegPass, setRegUser, setConfRegPass, setDisplayLogin, setUserLoggedIn}) {
-    async function handleLoginSubmission (e) {
+    function handleLoginSubmission (e) {
         e.preventDefault();
         
         fetch("http://localhost:3000/login", {
@@ -82,7 +96,10 @@ function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLog
             setDisplayMessage(data.message);
             clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
             if (data.valid) {
-                setUserLoggedIn(data.user);
+                const {user} = data;
+                const fullUser = await getUserInfo(user.id);
+
+                setUserLoggedIn(fullUser);
                 setDisplayLogin(false); // remove login display and provide the user which is logged in
             }
                 // remove login window and pass in user who logged in 
@@ -110,9 +127,18 @@ function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLog
     );
 }
 
+function addUserInfo (username, id) {
+     fetch("http://localhost:3000/addUser", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username, id})
+        }).catch(error => {
+            console.log("Error in adding user information: " + error);
+        })
+}
 function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass, setConfRegPass, setLoginDisplay, setDisplayMessage, setLoginPass, setLoginUser}) {
 
-    async function handleRegisterSubmit (e) {
+    function handleRegisterSubmit (e) {
         e.preventDefault();
         if (regPass !== confRegPass) {
             setDisplayMessage("Passwords don't match! You fucked up!");
@@ -131,6 +157,8 @@ function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass
             } else {
                 clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
                 setLoginDisplay(true); // if registered successfully automatically go to login display
+
+                addUserInfo(data.username, data.id); // adds template for user information to userInfo.json
             }
         }).catch(error => {
             console.log("Error when receiving response for registration " + error);

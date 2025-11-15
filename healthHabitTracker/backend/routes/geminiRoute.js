@@ -5,34 +5,31 @@ const router = express.Router();
 import "dotenv/config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const chatModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const chatModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 
 // // Workout coach AI route
-// app.post("/api/chat", async (req, res) => {
-//   try {
-//     const { message } = req.body;
+router.post("/api/chat", async (req, res) => {
+  try {
+    const { message } = req.body;
 
-//     const prompt = `
-// You are a friendly workout coach. Give simple, helpful workout advice.
-// The user says: "${message}"
-// `;
+    const prompt = `
+Given the following workout name, reply with just the (general if need be) formula to calculate the calories burned given reps, sets, and weights. Do not explain your answer, and just provide this formula with the variable names: "${message}"
+`;
 
-//     const result = await chatModel.generateContent(prompt);
-//     const reply = result.response.text().trim();
+    const result = await chatModel.generateContent(prompt);
+    const reply = result.response.text().trim();
 
-//     return res.json({ reply });
-//   } catch (err) {
-//     console.error("AI Error:", err);
-//     return res.json({ reply: "Error generating response." });
-//   }
-// });
+    res.json({ reply }); // frontend will receive this  
+} catch (err) {
+    console.error("AI Error:", err);
+    return res.json({ reply: "Error generating response." });
+}
+});
 
 
 export default router;
