@@ -12,10 +12,11 @@ router.post("/login", (req, res) => {
     try {
         const {username, password} = req.body;
         const pastData = readLoginInfo();
-        if (!checkLoginValid(pastData, username, password)) {
+        const existingUser = checkLoginValid(pastData, username, password);
+        if (!existingUser) {
             return res.json({message: 'Your username/password is incorrect, please try again', user: null, valid: false});
         }
-        return res.send({message: `Logged in as ${username}`, user: {username: username, id: id}, valid: true}); // valid means successful login 
+        return res.send({message: `Logged in as ${username}`, user: {username: username, id: existingUser.id}, valid: true}); // valid means successful login 
 
     } catch (error) {
         console.error("Error in login process " + error);
@@ -33,7 +34,7 @@ router.post("/register", (req, res) => {
 
         
         const newData = pastData ? pastData : [];
-        newData.push({username: username, password: encryptPassword(password), id: id});
+        newData.push({username: username, password: encryptPassword(password), id: `${username}-${id}`});
 
         writeLoginInfo(newData);
         res.send({message: `registered ${username}`, success: true});
@@ -51,7 +52,7 @@ function checkLoginValid (data, username, password) {
         return false;
     }
     const existingUser = data.find(user => user.username === username && comparePassword(password, user.password));
-    return existingUser ? true : false;
+    return existingUser; // will return the exisiting user
 }
 
 // true if valid username false if repeat username found
