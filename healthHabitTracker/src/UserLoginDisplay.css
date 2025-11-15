@@ -3,10 +3,15 @@
 
 .main {
     font-family: 'Momo Trust Display', serif;
-    position: fixed;
-    top: 50%;
-    left:50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;      /* extra breathing room */
+    padding-left: 5vw;
+    padding-right: 5vw;
+    overflow-y: auto;         /* if card gets taller than screen, page scrolls */
 }
 
 .text label{
@@ -37,12 +42,14 @@
 .container {
     position: relative;
     background-color: #ffffff;
-    padding: 30px 70px;
-    max-height: 80vh;;
-    font-size: 1.5vw;
+    padding: 3vh 4vw;
+    width: min(600px, 100%);        /* nice max width, responsive */
+    font-size: 1rem;                /* stable text size */
     border-radius: 40px;
     
+    box-sizing: border-box;
     transition: padding 0.3s ease;
+    /* remove max-height completely */
 }
 
 /* .username-false-display p{
@@ -52,16 +59,14 @@
     
 } */
 
-.text input{
-    width: 30vw;
-    height: 2.3vw;
-    border-radius: 1vw;
-    border-width: 0vw;
-    margin-bottom: 1vw;
-    padding-left: 0.7vw;
-    padding-right: 0.7vw;
+.text input {
+    width: 100%;              /* fill container */
+    height: 6vh;
+    border-radius: 1.5rem;
+    border: none;
+    margin-bottom: 1rem;
     background-color: rgb(240, 240, 240);
-    font-family: 'Momo Trust Display', serif;;
+    font-family: 'Momo Trust Display', serif;
 }
 
 .text input:focus {
