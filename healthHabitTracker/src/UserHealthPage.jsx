@@ -4,6 +4,8 @@ import {useEffect} from 'react'
 
 function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     const [aiMessage, setAIMessage] = useState("");
+    const [updateHeight, setUpdateHeight] = useState("");
+    const [updateWeight, setUpdateWeight] = useState("");
     function askAI () {
         fetch("http://localhost:3000/api/chat", {
             method: "POST",
