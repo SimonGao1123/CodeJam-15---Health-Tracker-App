@@ -43,6 +43,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
             setUpdateSex={setUpdateSex}
             updateAge={updateAge}
             setUpdateAge={setUpdateAge}
+            userLoggedIn={userLoggedIn}
             /> : <></>}
             
 
@@ -54,8 +55,18 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     );
     
 }
-function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateWeight, updateSex, setUpdateSex, updateAge, setUpdateAge}) {
-    return (<form>
+function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateWeight, updateSex, setUpdateSex, updateAge, setUpdateAge,userLoggedIn}) {
+    function handleUpdateAttributes (e) {
+        e.preventDefault();
+        fetch("http://localhost:3000/updateUser", {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({id:userLoggedIn.id, weight:updateWeight, sex:updateSex, height:updateHeight, age:updateAge})
+        }).catch(error => {
+            console.log("Error in adding user information: " + error);
+        })
+    }
+    return (<form onSubmit={handleUpdateAttributes}>
             <h3>Physical Attributes:</h3>
             
             <label for="updateheight">Height: </label>
@@ -66,13 +77,13 @@ function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateW
             
             <label for="updatesex">Gender: </label>
             <select id="updatesex" value={updateSex} onChange={(e)=>setUpdateSex(e.target.value)}>
-                <option selected disabled hidden value={null}>Select Option:</option>
+                <option selected disabled hidden value="">Select Option:</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
             </select>
             
             <label for="updateage">Age: </label>
-            <input type="number" min={0} id="updateage" value={updateAge} onChange={(e) => {if(!isNaN(e.target.value))setUpdateAge(Number(e.target.value))}}/>
+            <input type="number" id="updateage" value={updateAge} onChange={(e) => {if(!isNaN(e.target.value) || e.target.value < 0)setUpdateAge(Number(e.target.value))}}/>
             
             <button type="submit">Update</button>
         </form>);

@@ -36,6 +36,26 @@ router.get("/getUser/:id", (req, res) => {
         console.error("error in obtaining user from userInfo.json " + error);
     }
 })
+
+// updates a user with id
+router.patch("/updateUser", (req, res) => {
+    try {
+        const {id, weight, sex, height, age} = req.body;
+        const data = readUserInfo();
+
+        const pastUser = data.find(user => user.id === id);
+        const indexUser = data.findIndex(user => user.id === id);
+
+        const newUser = {...pastUser, weight: weight, sex:sex, height:height, age:age}; 
+
+        data[indexUser] = newUser;
+        writeUserInfo(data);
+    } catch(error) {
+        console.error("Error in updating user attributes: " + error);
+    }
+});
+
+
 function readUserInfo () {
     try {
         const data = fs.readFileSync(userInfoPath, "utf-8");

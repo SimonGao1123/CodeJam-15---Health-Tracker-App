@@ -140,8 +140,13 @@ function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass
 
     function handleRegisterSubmit (e) {
         e.preventDefault();
+        if (regPass.length < 8 || (!/[a-zA-Z]/.test(regPass) && !/[0-9]/.test(regPass))) {
+            setDisplayMessage("Passwords need to be stronger (at least 8 characters and 1 letter and 1 number)");
+            clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
+            return;
+        }
         if (regPass !== confRegPass) {
-            setDisplayMessage("Passwords don't match! You fucked up!");
+            setDisplayMessage("Passwords don't match!");
             clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
             return;
         }
