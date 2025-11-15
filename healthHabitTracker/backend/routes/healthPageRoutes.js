@@ -87,8 +87,26 @@ function readTimeInfo () {
         console.error("Error occurred while reading Time info: " + error);
     }
 }
+function writeTimeInfo (newTime) {
+    try {
+        fs.writeFileSync(timeInfoPath, newTime, 'utf-8');
+    } catch (error) {
+        console.error("Error occurred while writing Time info: " + error);
+    }
+}
 
-    router.get("/getDate", (req, res) => {
+router.post("/writeDate", (req, res) => {
+    try {
+        const {date} = req.body;
+        writeTimeInfo(date);
+
+        res.send({message: "successfully added date"});
+    } catch(error) {
+        console.error("error while writing date: ", error);
+    }
+    
+});
+router.get("/getDate", (req, res) => {
     try {
         const timedata = readTimeInfo();
         console.log(timedata);
@@ -98,5 +116,6 @@ function readTimeInfo () {
         console.error("error in obtaining time " + error);
     }
 })
+
 
 export default router;

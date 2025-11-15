@@ -15,36 +15,32 @@ const defaultWeightTemplate = {
         duration: "",
         workout_title: ""
     };
-// var currentDay = new Date();
-// var dayWeek = currentDay.getDay(); // Sunday - Saturday : 0 - 6
-// var dayMonth = currentDay.getDate(); // 1 - 31
+// var currentDate = new Date();
+// var dayWeek = currentDate.getDay(); // Sunday - Saturday : 0 - 6
+// var dayMonth = currentDate.getDate(); // 1 - 31
 // // retrieve last logged date
 
-// console.log(currentDay)
-// var currentDay = new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate());
-// console.log(currentDay)
+// console.log(currentDate)
+// var currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+// console.log(currentDate)
 
 
 // function 
-function updateClock() {
-    var tempDate = new Date();
-    var tempDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
-    if (currentDay.getMonth() != tempDate.getMonth() || currentDay.getFullYear() != currentDay.getFullYear())
-        {
-            // updateLeaderboard()
-        }
-    var startWeek1 = new Date(currentDay.getFullYear(), currentDay.getMonth(), currentDay.getDate() - currentDay.getDay())
-    var startWeek2 = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate() - currentDay.getDay)
-    if (startWeek1.getTime() === startWeek2.getTime())
-        {
-            // updateStreak()
-        }
-    var currentDay = tempDate;
-    var dayWeek = currentDay.getDay(); // Sunday - Saturday : 0 - 6
-    var dayMonth = currentDay.getDate(); // 1 - 31
+function writeDateFile (newDate) {
+    fetch("http://localhost:3000/writeDate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({date: newDate})
+    }).then(async response => {
+        const data = await response.json();
+        console.log(data.message);
+    }).catch(error => {
+        console.log("error sending data in writeDataFile", error);
+    })
 }
 
 function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
+    const [currentDate, setCurrentDate] = useState(new Date());
     const [weeklyCalendar, setWeeklyCalendar] = useState(userLoggedIn.weeklyCalendar); 
     const {weight, sex, age, height} = userLoggedIn;
 
@@ -63,6 +59,26 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     const [displayMessage, setDisplayMessage] = useState(null);
 
     console.log(workoutInputs)
+
+    function updateClock() {
+        var tempDate = new Date();
+        var tempDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
+        if (currentDate.getMonth() != tempDate.getMonth() || currentDate.getFullYear() != currentDate.getFullYear())
+            {
+                // updateLeaderboard()
+            }
+        var startWeek1 = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay())
+        var startWeek2 = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate() - currentDate.getDay)
+        if (startWeek1.getTime() === startWeek2.getTime())
+            {
+                // updateStreak()
+            }
+        setCurrentDate(tempDate);
+        writeDateFile(tempDate);
+        var dayWeek = currentDate.getDay(); // Sunday - Saturday : 0 - 6
+        var dayMonth = currentDate.getDate(); // 1 - 31
+    }
+
 
 
 
@@ -101,6 +117,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
 
     return (
         <>
+            {/* <button onClick={() => updateClock()}>Update Day</button> */}
             <h2>Hello {userLoggedIn.username}</h2>
 
             <button onClick={() => setMenuShown(!menuShown)}>☰</button>
