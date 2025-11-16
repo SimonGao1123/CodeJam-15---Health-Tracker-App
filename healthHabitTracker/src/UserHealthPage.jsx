@@ -125,11 +125,8 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     }
 
     return (
-        <>
-            <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>
-            <h2>Hello {userLoggedIn.username}</h2>
+        <div className="user-health-page">
 
-            <button onClick={() => setMenuShown(!menuShown)}>☰</button>
             {menuShown ?
             <AttributeForm 
             updateHeight={updateHeight}
@@ -144,33 +141,51 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
             displayMessage={displayMessage}
             setDisplayMessage={setDisplayMessage}
             /> : <></>}
-            
-            
 
-            <WeeklyCalendar
-                userLoggedIn={userLoggedIn}
-                currentDay={currentDate}
-                calendar={calendar}
-                setCalendar={setCalendar}
-                workoutCategory={workoutCategory}
-                setWorkoutCategory={setWorkoutCategory}
-                workoutIntensity={workoutIntensity}
-                setWorkoutIntensity={setWorkoutIntensity}
-                workoutInputs={workoutInputs}
-                setWorkOutInputs={setWorkOutInputs}
-                displayMessage={displayMessage}
-                setDisplayMessage={setDisplayMessage}
-                updateHeight={updateHeight}
-                updateAge={updateAge}
-                updateWeight={updateWeight}
-                updateSex={updateSex}
-                />
-            
-            <button onClick={() => signOutFunction(setUserLoggedIn, setDisplayLogin)}>Sign out</button>
+            <div className='main-boxes'>
+                <div className='box1'>
+                    <div classsName ='box1-attributes'>
+                        
+                        <div className = 'head'>
+                        <h2>Hello {userLoggedIn.username}</h2>
+                        </div>
+                        
+                        <div className = 'master-buttons'>
+                        <button onClick={() => setMenuShown(!menuShown)}>☰</button>
+                        <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>
+                        <button onClick={() => signOutFunction(setUserLoggedIn, setDisplayLogin)}>Sign out</button>
+                        </div>
 
-            
+                    </div>
+                </div>
 
-        </>
+                <div className='box2'>
+                    
+                    <div className='box2-attributes'>
+                    <WeeklyCalendar
+                        userLoggedIn={userLoggedIn}
+                        currentDay={currentDate}
+                        calendar={calendar}
+                        setCalendar={setCalendar}
+                        workoutCategory={workoutCategory}
+                        setWorkoutCategory={setWorkoutCategory}
+                        workoutIntensity={workoutIntensity}
+                        setWorkoutIntensity={setWorkoutIntensity}
+                        workoutInputs={workoutInputs}
+                        setWorkOutInputs={setWorkOutInputs}
+                        displayMessage={displayMessage}
+                        setDisplayMessage={setDisplayMessage}
+                        updateHeight={updateHeight}
+                        updateAge={updateAge}
+                        updateWeight={updateWeight}
+                        updateSex={updateSex}
+                        />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     );
     
 }
@@ -178,6 +193,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
 function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateWeight, updateSex, setUpdateSex, updateAge, setUpdateAge,userLoggedIn}) {
     function handleUpdateAttributes (e) {
         e.preventDefault();
+
         fetch("http://localhost:3000/updateUser", {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
@@ -186,32 +202,35 @@ function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateW
             console.log("Error in adding user information: " + error);
         })
     }
-    return (<form onSubmit={handleUpdateAttributes}>
-            <h3>Physical Attributes:</h3>
-            
-            <label htmlFor="updateheight">Height (cm): </label>
-            <input type="text" id="updateheight" value={updateHeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateHeight(Number(e.target.value))}}/>
-            
-            <label htmlFor="updateweight">Weight (kg): </label>
-            <input type="text" id="updateweight" value={updateWeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateWeight(Number(e.target.value))}}/>
-            
-            <label htmlFor="updatesex">Gender: </label>
-            <select id="updatesex" value={updateSex} onChange={(e)=>setUpdateSex(e.target.value)}>
-                <option selected disabled hidden value="">Select Option:</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-            
-            <label htmlFor="updateage">Age (years): </label>
-            <input type="number" id="updateage" value={updateAge} onChange={(e) => {if(!isNaN(e.target.value) || e.target.value < 0)setUpdateAge(Number(e.target.value))}}/>
-            
-            <button type="submit">Update</button>
-        </form>);
+    return (            
+    <div className='overlay-box'>
+            <form onSubmit={handleUpdateAttributes}>
+                <h3>Physical Attributes:</h3>
+                
+                <label for="updateheight">Height: </label>
+                <input type="text" id="updateheight" value={updateHeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateHeight(Number(e.target.value))}}/>
+                
+                <label for="updateweight">Weight: </label>
+                <input type="text" id="updateweight" value={updateWeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateWeight(Number(e.target.value))}}/>
+                
+                <label for="updatesex">Biological Sex: </label>
+                <select id="updatesex" value={updateSex} onChange={(e)=>setUpdateSex(e.target.value)}>
+                    <option selected disabled hidden value="">Select Option:</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                
+                <label for="updateage">Age: </label>
+                <input type="number" id="updateage" value={updateAge} onChange={(e) => {if(!isNaN(e.target.value) || e.target.value < 0)setUpdateAge(Number(e.target.value))}}/>
+                
+                <button type="submit">Update</button>
+            </form>
+    </div>
+        );
 }
 
 function signOutFunction (setUserLoggedIn, setDisplayLogin) {
     setUserLoggedIn({});
     setDisplayLogin(true); // go back to login page
 }
-
 export default UserHealthPage;

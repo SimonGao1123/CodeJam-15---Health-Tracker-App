@@ -3,5 +3,25 @@
     "username": "can",
     "password": "2672fa2994b5dcf1171c75fa9c7306f8:7005ba6aaf1ee5bfdbfaf26407378078bb5b3cdaf0777c781d235450e1e643135c561f0db44b62cc3503a3c5768c2b356d6c14551d5982daaf833104d29a5a01",
     "id": "can-1"
+  },
+  {
+    "username": "alex",
+    "password": "2ca09cc8114889db2dac9dd07f7d5a5f:03c374cb50aa4bfc909eaa1f34056fe3211b955c1b5e328f0e2dc57f5835bb31e23f01412cb025ed4fb71881011732e081300c041f2ee3d6bc92584d87c9ef65",
+    "id": "alex-1"
+  },
+  {
+    "username": "daniel",
+    "password": "8b6b954563243d24192f407dc9db18b2:8320127c5dff22e01ca2643676e87721beea8d28abac90de3a85b4ba5c8e4cf6882d8af2b74388f407086bc1642f5b874ff918b9bf23f2f52ab89296ac7e4f92",
+    "id": "daniel-2"
+  },
+  {
+    "username": "bobby",
+    "password": "1108291688de90dfecdeb40d341a0d97:401131a61339f64465dd59dfd24ebd6dd1ef82fd398236f5d88cbb9448e75705c7c64c8d5c2b9e5a077cb49a6f02dc87f7815e8a93d1cd309d44d6d9c79ce660",
+    "id": "bobby-3"
+  },
+  {
+    "username": "asdf",
+    "password": "02f6d1881dcd5e08515c2042e55ddb68:c57692b22958bda4c88389701a462884fe22d9dc3ea67195e50b313ff7394034bd49dd1ba4155f0b8d773cedf3bb2f5cfafda76681046ff2a95bb2eac82c9e4c",
+    "id": "asdf-4"
   }
 ]

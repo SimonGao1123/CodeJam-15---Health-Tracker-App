@@ -1,3 +1,4 @@
+import './WeeklyCalender.css'
 import { useState } from 'react'
 import {useEffect} from 'react'
 import workoutMETValues from './extraData/workoutMETValues.jsx';
@@ -36,7 +37,7 @@ function WeeklyCalendar ({userLoggedIn,
     console.log(calendar);
     const wholeCalendarDisplay = [];
     for (let i = 0; i < 7; i++) {
-        wholeCalendarDisplay.push(<DisplayCalendarSquare workoutCategory={workoutCategory} setSelectedDay={setSelectedDay} ifCurrDay={i === currDayIndex} dayIndex={i} currentDay={currentDay} calendarSquareData={calendar[i]}/>)
+        wholeCalendarDisplay.push(<DisplayCalendarSquare selectedDay={selectedDay} workoutCategory={workoutCategory} setSelectedDay={setSelectedDay} ifCurrDay={i === currDayIndex} dayIndex={i} currentDay={currentDay} calendarSquareData={calendar[i]}/>)
     }
     useEffect(() => {
         if (!calendar||burntCalories==null) return; 
@@ -158,6 +159,7 @@ function updateCalendarUser (userLoggedIn, newCalendar, caloriesBurnt) {
         })
 }
 function DisplayCalendarSquare({
+  selectedDay,
   workoutCategory, 
   setSelectedDay,
   ifCurrDay,
@@ -186,13 +188,15 @@ function DisplayCalendarSquare({
   ));
 
   return (
-    <div
-      onClick={() => setSelectedDay(dayIndex)}
-      style={{ backgroundColor: ifCurrDay ? "yellow" : "white" }}
-      className="calendar-square"
-    >
-      <p>{dayName}</p>
-      {workoutsDisplay}
+    <div className='days'>
+        <div
+        onClick={() => setSelectedDay(dayIndex)}
+        style={{ backgroundColor: dayIndex===selectedDay ? "green" : ifCurrDay ? "yellow" : "white" }}
+        className="calendar-square"
+        >
+        <p>{dayName}</p>
+        {workoutsDisplay}
+        </div>
     </div>
   );
 }

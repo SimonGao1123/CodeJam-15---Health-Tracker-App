@@ -33,5 +33,85 @@
     ],
     "weeklyCaloriesBurnt": 1.3541666666666667,
     "totalCaloriesBurnt": 1.3541666666666667
+  },
+  {
+    "username": "alex",
+    "id": "alex-1",
+    "streak": 0,
+    "weight": 0,
+    "sex": "",
+    "age": 0,
+    "height": 0,
+    "weeklyCalendar": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "weeklyCaloriesBurnt": 0,
+    "totalCaloriesBurnt": 0
+  },
+  {
+    "username": "daniel",
+    "id": "daniel-2",
+    "streak": 0,
+    "weight": 0,
+    "sex": null,
+    "age": 0,
+    "height": 0,
+    "weeklyCalendar": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "weeklyCaloriesBurnt": 0,
+    "totalCaloriesBurnt": 0
+  },
+  {
+    "username": "bobby",
+    "id": "bobby-3",
+    "streak": 0,
+    "weight": 69,
+    "sex": "male",
+    "age": 700,
+    "height": 69,
+    "weeklyCalendar": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "weeklyCaloriesBurnt": 0,
+    "totalCaloriesBurnt": 0
+  },
+  {
+    "username": "asdf",
+    "id": "asdf-4",
+    "streak": 0,
+    "weight": 69,
+    "sex": "male",
+    "age": 18,
+    "height": 69,
+    "weeklyCalendar": [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ],
+    "weeklyCaloriesBurnt": 0,
+    "totalCaloriesBurnt": 0
   }
 ]
