@@ -36,7 +36,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     }, [])
 
     console.log("weekly calendar: ", userLoggedIn.weeklyCalendar);
-    const {weight, sex, age, height, weeklyCalendar} = userLoggedIn;
+    const {streak, weight, sex, age, height, weeklyCalendar} = userLoggedIn;
     
     
 
@@ -47,6 +47,8 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     const [updateWeight, setUpdateWeight] = useState(weight);
     const [updateSex, setUpdateSex] = useState(sex);
     const [updateAge, setUpdateAge] = useState(age);
+    
+    const [updateStreak, setUpdateStreak] = useState(streak);
 
     useEffect(() => {
     setUpdateHeight(height ?? 0);
@@ -64,7 +66,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     const [displayMessage, setDisplayMessage] = useState(null);
 
 
-    function updateClock() {
+    function updateClock(streak, weeklyCalendar, userLoggedIn) {
         if (!currentDate) {
             console.log("Current date not loaded yet");
             return;
@@ -95,8 +97,8 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         tempDate.getDate() - tempDate.getDay()   // you forgot () on getDay before
         );
 
-        if (startWeek1.getTime() === startWeek2.getTime()) {
-            // updateStreak()
+        if (startWeek1.getTime() !== startWeek2.getTime()) {
+            StreakUpdate(streak,weeklyCalendar,userLoggedIn)
         }
 
         setCurrentDate(tempDate);
@@ -106,6 +108,21 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         const dayMonth = currentDate.getDate();
     }
 
+    function StreakUpdate(updateStreak,weeklyCalendar,userLoggedIn) {
+        // console.log(weeklyCalendar)
+        if (weeklyCalendar.flat().length === 0){
+            updateStreak = 0
+        } else {
+            updateStreak += 1
+        }
+        fetch("http://localhost:3000/updateStreak", {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({id:userLoggedIn.id, streak:updateStreak})
+        }).catch(error => {
+            console.log("Error in adding user information: " + error);
+        })
+    }
 
     return (
         <>
