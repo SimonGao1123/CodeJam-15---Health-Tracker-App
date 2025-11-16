@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Gloock&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap');
 
+#title {
+      font-family: 'Momo Trust Display', serif;
+
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
 .main {
     font-family: 'Momo Trust Display', serif;
     display: flex;

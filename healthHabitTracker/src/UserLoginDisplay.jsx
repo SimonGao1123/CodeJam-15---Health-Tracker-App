@@ -19,8 +19,9 @@ function UserLoginDisplay ({setDisplayLogin, setUserLoggedIn}) {
         clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
     }, [ifLoginDisplay]); // if login/register display changes then reset the display message
     return (
+        <>
+        <h2 id="title">MetricFit</h2>
         <div className = "main">
-
             <div className = "container">
                 {ifLoginDisplay 
                 ? <LoginDisplay 
@@ -57,7 +58,7 @@ function UserLoginDisplay ({setDisplayLogin, setUserLoggedIn}) {
             </div>
 
         </div>
-
+            </>
     );
 }
 function clearAllEntries (setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass) {

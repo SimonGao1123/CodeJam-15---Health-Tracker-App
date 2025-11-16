@@ -199,6 +199,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                     <div classsName ='box1-attributes'>
                         
                         <div className = 'head'>
+                        <h1>MetricFit</h1>
                         <h2>Hello {userLoggedIn.username}</h2>
                         </div>
                         
