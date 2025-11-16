@@ -122,9 +122,6 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         let tempDate = new Date();
         tempDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate());
 
-        // ⚠️ This line has a bug too:
-        // currentDate.getFullYear() != currentDate.getFullYear()
-        // should be comparing tempDate
         if (
         currentDate.getMonth() !== tempDate.getMonth() ||
         currentDate.getFullYear() !== tempDate.getFullYear()
