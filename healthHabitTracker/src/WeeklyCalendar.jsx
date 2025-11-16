@@ -138,9 +138,9 @@ return (
             workoutInputs={workoutInputs}
             setWorkOutInputs={setWorkOutInputs}/>
 
-            <p>{displayMessage}</p>
-            <button onClick={() => addWorkoutToCalendar()}>Add workout</button>
-            {wholeCalendarDisplay}
+            {/* <p>{displayMessage}</p> */}
+            {/* <button onClick={() => addWorkoutToCalendar()}>Add workout</button>
+            {wholeCalendarDisplay} */}
             
         </div>
 

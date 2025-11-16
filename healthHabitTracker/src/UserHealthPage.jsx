@@ -195,7 +195,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                         <p>Total Calories Burned: {displayTotalBurnt}</p>
                         <div className = 'master-buttons'>
                         <button onClick={() => setMenuShown(!menuShown)}>☰ Menu</button>
-                        <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>
+                        {/* <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button> */}
                         <button onClick={() => signOutFunction(setUserLoggedIn, setDisplayLogin)}>Sign out</button>
                         </div>
 
@@ -224,14 +224,16 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                         updateSex={updateSex}
                         />
                     </div>
-
-                    <div id="leaderboard-container">
-                        <h2>Leaderboard:</h2>
-                        <LeaderBoardDisplay leaderBoardData={leaderBoardData}/>
-                    </div>
                 </div>
                     
 
+            </div>
+
+            <div id="leaderboard-container" className='leaderboard-container'>
+                <h2>Leaderboard:</h2>
+                <div className='leaderboard-friends'>
+                    <LeaderBoardDisplay leaderBoardData={leaderBoardData}/>
+                </div>
             </div>
 
 

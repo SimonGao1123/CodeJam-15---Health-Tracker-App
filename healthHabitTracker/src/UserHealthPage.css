@@ -143,13 +143,12 @@
 }
 
 
-.box3{
+.leaderboard-container {
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     flex: 1;
     background-color: rgb(255, 255, 255);
-    background-color: rgba(255, 255, 255,0.3);
     font-family: 'Momo Trust Display', serif;
     border-radius: 30px;
     margin: 10px 6.7px;
@@ -158,8 +157,16 @@
     border-color: #c0c0c0;
     transition: border-color 0.2s ease;
 }
-.box3:hover {
+.leaderboard-container:hover {
     border-color: #84e2e5;    
+}
+.leaderboard-container h2{
+    text-align: center;
+}
+.leaderboard-friends {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 
