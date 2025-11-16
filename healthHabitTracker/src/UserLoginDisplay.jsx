@@ -16,40 +16,47 @@ function UserLoginDisplay ({setDisplayLogin, setUserLoggedIn}) {
 
 
     useEffect(() => {
-        clearAllEntries(setLoginUser, setLoginPass, setRegPass, setRegPass, setConfRegPass);
+        clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
     }, [ifLoginDisplay]); // if login/register display changes then reset the display message
     return (
-        <>
-            {ifLoginDisplay 
-            ? <LoginDisplay 
-            loginUser={loginUser} 
-            setLoginUser={setLoginUser} 
-            loginPass={loginPass} 
-            setLoginPass={setLoginPass} 
-            setLoginDisplay={setLoginDisplay}
-            setDisplayMessage={setDisplayMessage}
-            setRegPass={setRegPass}
-            setRegUser={setRegUser}
-            setConfRegPass={setConfRegPass}
-            setDisplayLogin={setDisplayLogin}
-            setUserLoggedIn={setUserLoggedIn}
-            /> 
+        <div className = "main">
 
-            : <RegisterDisplay 
-            regUser={regUser} 
-            setRegUser={setRegUser}
-            regPass={regPass}
-            setRegPass={setRegPass}
-            confRegPass={confRegPass}
-            setConfRegPass={setConfRegPass}
-            setLoginDisplay={setLoginDisplay}
-            setDisplayMessage={setDisplayMessage}
-            setLoginPass={setLoginPass}
-            setLoginUser={setLoginUser}/>
-            }
+            <div className = "container">
+                {ifLoginDisplay 
+                ? <LoginDisplay 
+                loginUser={loginUser} 
+                setLoginUser={setLoginUser} 
+                loginPass={loginPass} 
+                setLoginPass={setLoginPass} 
+                setLoginDisplay={setLoginDisplay}
+                setDisplayMessage={setDisplayMessage}
+                setRegPass={setRegPass}
+                setRegUser={setRegUser}
+                setConfRegPass={setConfRegPass}
+                setDisplayLogin={setDisplayLogin}
+                setUserLoggedIn={setUserLoggedIn}
+                /> 
 
-            <p>{displayMessage}</p>
-        </>
+                : <RegisterDisplay 
+                regUser={regUser} 
+                setRegUser={setRegUser}
+                regPass={regPass}
+                setRegPass={setRegPass}
+                confRegPass={confRegPass}
+                setConfRegPass={setConfRegPass}
+                setLoginDisplay={setLoginDisplay}
+                setDisplayMessage={setDisplayMessage}
+                setLoginPass={setLoginPass}
+                setLoginUser={setLoginUser}/>
+                }
+
+                <div className = {`message-box ${displayMessage ? "show" : ""}`}>
+                    <p>{displayMessage}</p>
+                </div>
+
+            </div>
+
+        </div>
 
     );
 }
@@ -60,8 +67,23 @@ function clearAllEntries (setLoginUser, setLoginPass, setRegUser, setRegPass, se
     setRegPass("");
     setConfRegPass("");
 }
+async function getUserInfo(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/getUser/${id}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    });
+        const data = await response.json();
+        
+        return data.user;
+    } catch (error) {
+        console.log("error in getting user information " + error);
+        return null;
+    }
+}
+
 function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLoginDisplay, setDisplayMessage, setRegPass, setRegUser, setConfRegPass, setDisplayLogin, setUserLoggedIn}) {
-    async function handleLoginSubmission (e) {
+    function handleLoginSubmission (e) {
         e.preventDefault();
         
         fetch("http://localhost:3000/login", {
@@ -74,7 +96,10 @@ function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLog
             setDisplayMessage(data.message);
             clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
             if (data.valid) {
-                setUserLoggedIn(data.user);
+                const {user} = data;
+                const fullUser = await getUserInfo(user.id);
+
+                setUserLoggedIn(fullUser);
                 setDisplayLogin(false); // remove login display and provide the user which is logged in
             }
                 // remove login window and pass in user who logged in 
@@ -85,7 +110,8 @@ function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLog
     } 
 
     return (
-        <>
+        <div className="text">
+            
             <h2>Login</h2>
             <form onSubmit={handleLoginSubmission}>
                 <label htmlFor="user-login-input">Enter Username: </label>
@@ -97,16 +123,30 @@ function LoginDisplay ({loginUser, setLoginUser, loginPass, setLoginPass, setLog
             </form>
 
             <p>Don't have an account? <button onClick={() => setLoginDisplay(false)}>Register Here</button></p>
-        </>
+        </div>
     );
 }
 
+function addUserInfo (username, id) {
+     fetch("http://localhost:3000/addUser", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username, id})
+        }).catch(error => {
+            console.log("Error in adding user information: " + error);
+        })
+}
 function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass, setConfRegPass, setLoginDisplay, setDisplayMessage, setLoginPass, setLoginUser}) {
 
-    async function handleRegisterSubmit (e) {
+    function handleRegisterSubmit (e) {
         e.preventDefault();
+        if (regPass.length < 8 || (!/[a-zA-Z]/.test(regPass) || !/[0-9]/.test(regPass))) {
+            setDisplayMessage("Passwords need to be stronger (at least 8 characters and 1 letter and 1 number)");
+            clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
+            return;
+        }
         if (regPass !== confRegPass) {
-            setDisplayMessage("Passwords don't match! You fucked up!");
+            setDisplayMessage("Passwords don't match!");
             clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
             return;
         }
@@ -122,12 +162,15 @@ function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass
             } else {
                 clearAllEntries(setLoginUser, setLoginPass, setRegUser, setRegPass, setConfRegPass);
                 setLoginDisplay(true); // if registered successfully automatically go to login display
+
+                addUserInfo(data.username, data.id); // adds template for user information to userInfo.json
             }
         }).catch(error => {
             console.log("Error when receiving response for registration " + error);
         });
     }
-    return (<>
+    return (
+    <div className="text">
             <h2>Register</h2>
             <form onSubmit={handleRegisterSubmit}>
                 <label htmlFor="user-register-input">Enter Username: </label>
@@ -141,8 +184,8 @@ function RegisterDisplay ({regUser, setRegUser, regPass, setRegPass, confRegPass
             </form>
 
             <p>Have an account? <button onClick={() => setLoginDisplay(true)}>Login Here</button></p>
-
-        </>);
+    </div>
+    );
 }
 
 export default UserLoginDisplay

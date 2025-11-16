@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloock&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap');
+
+.main {
+    font-family: 'Momo Trust Display', serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;      /* extra breathing room */
+    padding-left: 5vw;
+    padding-right: 5vw;
+    overflow-y: auto;         /* if card gets taller than screen, page scrolls */
+}
+
+.text label{
+    display: flex;
+    flex-direction: column;
+    text-align: flex;
+    
+}
+
+.text button {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.text button:hover{
+    background-color: rgb(240, 240, 240);
+    padding: 12px;
+    transition : background-color, padding 0.3s ease;
+    
+}
+
+.text button {
+     font-family: 'Momo Trust Display', serif;;
+}
+
+.container {
+    position: relative;
+    background-color: #ffffff;
+    padding: 3vh 4vw;
+    width: min(600px, 100%);        /* nice max width, responsive */
+    font-size: 1rem;                /* stable text size */
+    border-radius: 40px;
+    
+    box-sizing: border-box;
+    transition: padding 0.3s ease;
+    /* remove max-height completely */
+}
+
+/* .username-false-display p{
+    color: green;
+    position:absolute;
+    top: 500px;
+    
+} */
+
+.text input {
+    width: 100%;              /* fill container */
+    height: 6vh;
+    border-radius: 1.5rem;
+    border: none;
+    padding-left: 3%;
+    margin-bottom: 1rem;
+    background-color: rgb(240, 240, 240);
+    font-family: 'Momo Trust Display', serif;
+}
+
+.text input:focus {
+  outline: none;
+  font-family: 'Momo Trust Display', serif;
+}
+
+.text button{
+    padding: 8px;
+    transition: padding 0.2s ease;
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(240, 240, 240);
+    font-size: 1.3vw;
+}
+
+.message-box {
+    max-height: 0;             
+    opacity: 0;
+    overflow: hidden;           
+    font-size: 1.4vw;
+
+    transition:
+        max-height 0.35s ease,
+        opacity 0.35s ease;
+}
+
+.message-box.show {
+    max-height: 100px;         
+    opacity: 1;
+}
+
+/*--------------*/
+
+@media (max-width: 900px) {
+  .text input {
+    width: 100%;          
+  }
+
+  .container {
+    padding: 24px 32px;   
+    font-size: 1.3vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    position: static;          
+    transform: none;
+    padding: 24px 16px;
+  }
+
+  .container {
+    max-height: none;         
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 24px;
+  }
+
+  .text input {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text button,
+  .container,
+  .message-box {
+    transition: none;
+  }
+}
