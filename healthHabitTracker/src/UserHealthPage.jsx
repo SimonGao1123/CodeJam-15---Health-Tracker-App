@@ -65,7 +65,22 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     const [workoutInputs, setWorkOutInputs] = useState(null); // none chosen yet
 
     const [displayMessage, setDisplayMessage] = useState(null);
-
+    const [displayStreak, setDisplayStreak] = useState(0);
+    const [displayTotalBurnt, setDisplayTotalBurnt] = useState(0);
+    function getStreakAndTotalBurnt () {
+        fetch(`http://localhost:3000/getStreakTotalBurned/${userLoggedIn.id}`, {
+            method: "GET"
+        }).then(async response => {
+            const data = await response.json();
+            setDisplayStreak(data.streak);
+            setDisplayTotalBurnt(data.totalCaloriesBurnt);
+        }).catch(error => {
+            console.log("Error in getting streak/totalburned data: ", error);
+        })
+    }
+    useEffect(() => {
+        getStreakAndTotalBurnt();
+    }, [userLoggedIn.id]);
     const [leaderBoardData, setLeaderBoardData] = useState(null);
     
     function getLeaderboard () {
@@ -82,7 +97,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     }
     useEffect(() => {
         getLeaderboard();
-    }, [leaderBoardData]);
+    }, [userLoggedIn.id]);
     console.log(leaderBoardData);
 
     
@@ -166,6 +181,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
             userLoggedIn={userLoggedIn}
             displayMessage={displayMessage}
             setDisplayMessage={setDisplayMessage}
+            setMenuShown={setMenuShown}
             /> : <></>}
 
             <div className='main-boxes'>
@@ -176,9 +192,11 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                         <h2>Hello {userLoggedIn.username}</h2>
                         </div>
                         
+                        <p>Current Streak: {displayStreak}</p>
+                        <p>Total Calories Burned: {displayTotalBurnt}</p>
                         <div className = 'master-buttons'>
                         <button onClick={() => setMenuShown(!menuShown)}>☰</button>
-                        <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>
+                        {/*<button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>*/}
                         <button onClick={() => signOutFunction(setUserLoggedIn, setDisplayLogin)}>Sign out</button>
                         </div>
 
@@ -247,7 +265,7 @@ function LeaderBoardDisplay({ leaderBoardData }) {
     </table>
   );
 }
-function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateWeight, updateSex, setUpdateSex, updateAge, setUpdateAge,userLoggedIn}) {
+function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateWeight, updateSex, setUpdateSex, updateAge, setUpdateAge,userLoggedIn,setMenuShown}) {
     function handleUpdateAttributes (e) {
         e.preventDefault();
 
@@ -258,6 +276,7 @@ function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateW
         }).catch(error => {
             console.log("Error in adding user information: " + error);
         })
+        setMenuShown(false); 
     }
     return (            
     <div className='overlay-box'>

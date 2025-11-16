@@ -20,6 +20,27 @@ router.post("/addUser", (req, res) => {
     
 
 });
+router.get("/getStreakTotalBurned/:id", (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = readUserInfo() || [];
+
+    const requestedUser = data.find(user => user.id === id);
+
+    if (!requestedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    res.send({
+      streak: requestedUser.streak || 0,
+      totalCaloriesBurnt: requestedUser.totalCaloriesBurnt || 0
+    });
+  } catch (error) {
+    console.error("error in getting streak", error);
+    res.status(500).send({ message: "Server error getting streak data" });
+  }
+});
+
 router.get("/leaderboard/:id", (req, res) => {
   try {
     const id = req.params.id;

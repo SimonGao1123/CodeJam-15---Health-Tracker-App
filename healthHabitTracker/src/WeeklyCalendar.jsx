@@ -132,23 +132,7 @@ function WeeklyCalendar ({userLoggedIn,
             <p>{displayMessage}</p>
             <button onClick={() => addWorkoutToCalendar()}>Add workout</button>
             {wholeCalendarDisplay}
-            <button
-            onClick={() =>
-                console.log(
-                caloriesBurnt(
-                    workoutInputs,
-                    updateWeight,
-                    updateHeight,
-                    updateAge,
-                    updateSex || userLoggedIn.sex,
-                    workoutCategory,
-                    workoutIntensity
-                )
-                )
-            }
-            >
-            Get Calories Burnt
-            </button>
+            
         </div>
     );
 }
