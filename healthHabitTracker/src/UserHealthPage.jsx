@@ -59,7 +59,6 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     }, [height, weight, age, sex]);
 
     const [menuShown, setMenuShown] = useState(!sex);
-
     const [workoutCategory, setWorkoutCategory] = useState(null);
     const [workoutIntensity, setWorkoutIntensity] = useState(null);
     const [workoutInputs, setWorkOutInputs] = useState(null); // none chosen yet
@@ -195,8 +194,8 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                         <p>Current Streak: {displayStreak}</p>
                         <p>Total Calories Burned: {displayTotalBurnt}</p>
                         <div className = 'master-buttons'>
-                        <button onClick={() => setMenuShown(!menuShown)}>☰</button>
-                        {/*<button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>*/}
+                        <button onClick={() => setMenuShown(!menuShown)}>☰ Menu</button>
+                        <button onClick={() => updateClock(streak, weeklyCalendar, userLoggedIn)}>Update Day</button>
                         <button onClick={() => signOutFunction(setUserLoggedIn, setDisplayLogin)}>Sign out</button>
                         </div>
 
