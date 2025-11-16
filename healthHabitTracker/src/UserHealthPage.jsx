@@ -101,6 +101,12 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
     }, [userLoggedIn.id]);
     console.log(leaderBoardData);
 
+    function handleCalendarUpdated() {
+        // after backend updates calendar and calories, refresh totals + leaderboard
+        getStreakAndTotalBurnt();
+        getLeaderboard();
+    }
+
     useEffect(() => {
     if (!currentDate) return;
     const interval = setInterval(() => updateClock(streak, weeklyCalendar, userLoggedIn), 5000);
@@ -230,6 +236,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
                         updateAge={updateAge}
                         updateWeight={updateWeight}
                         updateSex={updateSex}
+                        onCaloriesUpdated={handleCalendarUpdated}
                         />
                     </div>
                 </div>
@@ -292,10 +299,10 @@ function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateW
             <form onSubmit={handleUpdateAttributes}>
                 <h3>Physical Attributes:</h3>
                 
-                <label for="updateheight">Height: </label>
+                <label for="updateheight">Height (cm): </label>
                 <input type="text" id="updateheight" value={updateHeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateHeight(Number(e.target.value))}}/>
                 
-                <label for="updateweight">Weight: </label>
+                <label for="updateweight">Weight (kg): </label>
                 <input type="text" id="updateweight" value={updateWeight} onChange={(e) => {if(!isNaN(e.target.value))setUpdateWeight(Number(e.target.value))}}/>
                 
                 <label for="updatesex">Biological Sex: </label>
@@ -305,7 +312,7 @@ function AttributeForm ({updateHeight, setUpdateHeight, updateWeight, setUpdateW
                     <option value="female">Female</option>
                 </select>
                 
-                <label for="updateage">Age: </label>
+                <label for="updateage">Age (years): </label>
                 <input type="number" id="updateage" value={updateAge} onChange={(e) => {if(!isNaN(e.target.value) || e.target.value < 0)setUpdateAge(Number(e.target.value))}}/>
                 
                 <button type="submit">Update</button>

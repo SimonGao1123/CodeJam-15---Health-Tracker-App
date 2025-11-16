@@ -190,3 +190,10 @@ button {
 button:hover{
     transform: scale(1.08);
 }
+
+tr {
+    text-align: center;
+}
+table {
+    border-spacing: 10px;
+}

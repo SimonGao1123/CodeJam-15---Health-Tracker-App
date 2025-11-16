@@ -29,7 +29,8 @@ function WeeklyCalendar ({userLoggedIn,
     updateHeight,
     updateAge,
     updateWeight,
-    updateSex}) {
+    updateSex,
+    onCaloriesUpdated}) {
     const [selectedDay, setSelectedDay] = useState(null); // determines popup (will be 0 indexed)
     const [burntCalories, setBurntCalories] = useState(null);
     const dayRefs = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -40,9 +41,9 @@ function WeeklyCalendar ({userLoggedIn,
         wholeCalendarDisplay.push(<DisplayCalendarSquare selectedDay={selectedDay} workoutCategory={workoutCategory} setSelectedDay={setSelectedDay} ifCurrDay={i === currDayIndex} dayIndex={i} currentDay={currentDay} calendarSquareData={calendar[i]}/>)
     }
     useEffect(() => {
-        if (!calendar||burntCalories==null) return; 
-        updateCalendarUser(userLoggedIn, calendar, burntCalories);
-    }, [calendar, burntCalories]); // will update backend
+    if (!calendar || burntCalories == null) return; 
+    updateCalendarUser(userLoggedIn, calendar, burntCalories, onCaloriesUpdated);
+    }, [calendar]); 
 
     function addWorkoutToCalendar() {
     // 1. need a selected day
@@ -150,23 +151,6 @@ return (
           Add workout
         </button>
 
-        <button
-          onClick={() =>
-            console.log(
-              caloriesBurnt(
-                workoutInputs,
-                updateWeight,
-                updateHeight,
-                updateAge,
-                updateSex || userLoggedIn.sex,
-                workoutCategory,
-                workoutIntensity
-              )
-            )
-          }
-        >
-          Get Calories Burnt
-        </button>
       </div>
 
       {/* RIGHT SIDE: NEW BOX JUST FOR THE WEEK */}
@@ -180,18 +164,26 @@ return (
 
 
 }
-function updateCalendarUser (userLoggedIn, newCalendar, caloriesBurnt) {
+function updateCalendarUser (userLoggedIn, newCalendar, caloriesBurnt, onDone) {
     fetch("http://localhost:3000/updateUserCalendar", {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({newCalendar: newCalendar, id: userLoggedIn.id, caloriesBurnt: caloriesBurnt})
-        }).then(async response => {
-            const data = await response.json();
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            newCalendar: newCalendar,
+            id: userLoggedIn.id,
+            caloriesBurnt: caloriesBurnt
         })
-        .catch(error => {
-            console.log("Error in adding user information: " + error);
-        })
+    })
+    .then(async response => {
+        const data = await response.json();
+        console.log("calendar update response:", data);
+        if (onDone) onDone();   // tell parent to refresh totals
+    })
+    .catch(error => {
+        console.log("Error in adding user information: " + error);
+    });
 }
+
 function DisplayCalendarSquare({
   selectedDay,
   workoutCategory, 
@@ -294,7 +286,7 @@ function AdditionalWorkoutInputs ({workoutInputs, setWorkOutInputs}) {
         addon = "(kg): "
     }
     if (key === "duration") {
-        addon = "{mins}: "
+        addon = "(mins): "
     }
     const isText = key === "workout_title";
 
