@@ -2,28 +2,13 @@
   {
     "username": "can",
     "id": "can-1",
-    "streak": 6,
-    "weight": 0,
-    "sex": null,
-    "age": 0,
-    "height": 0,
+    "streak": 0,
+    "weight": 1,
+    "sex": "female",
+    "age": 39,
+    "height": 20,
     "weeklyCalendar": [
-      [
-        {
-          "workout_title": "busted squats",
-          "workoutCategory": "weightAndBodyweight",
-          "sets": 5,
-          "reps": 12,
-          "weights": 50
-        },
-        {
-          "workout_title": "busted squats",
-          "workoutCategory": "weightAndBodyweight",
-          "sets": 5,
-          "reps": 12,
-          "weights": 50
-        }
-      ],
+      [],
       [],
       [],
       [],
@@ -31,7 +16,7 @@
       [],
       []
     ],
-    "weeklyCaloriesBurnt": 1.3541666666666667,
-    "totalCaloriesBurnt": 1.3541666666666667
+    "weeklyCaloriesBurnt": 0,
+    "totalCaloriesBurnt": 0
   }
 ]

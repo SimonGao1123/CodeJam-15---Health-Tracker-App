@@ -98,7 +98,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         );
 
         if (startWeek1.getTime() !== startWeek2.getTime()) {
-            StreakUpdate(streak,weeklyCalendar,userLoggedIn)
+            StreakUpdate(streak,weeklyCalendar,userLoggedIn) // also calendar updater
         }
 
         setCurrentDate(tempDate);
@@ -121,7 +121,13 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
             body: JSON.stringify({id:userLoggedIn.id, streak:updateStreak})
         }).catch(error => {
             console.log("Error in adding user information: " + error);
-        })
+        });
+        
+        fetch(`http://localhost:3000/resetWeeklyCalendar/${userLoggedIn.id}`, {
+            method: "DELETE"
+        }).catch(error => {
+            console.log("Error in reseting weekly calendar, " + error);
+        });
     }
 
     return (

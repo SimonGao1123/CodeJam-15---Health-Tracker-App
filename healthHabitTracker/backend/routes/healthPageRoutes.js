@@ -67,7 +67,21 @@ router.patch("/updateUserCalendar", (req, res) => {
     res.status(500).send({ message: "Server error updating calendar" });
   }
 });
+router.delete("/resetWeeklyCalendar/:id", (req, res) => {
+    try {
+        const id = req.params.id;
+    const data = readUserInfo();
+    const pastUser = data.find(user => user.id === id);
+    const indexUser = data.findIndex(user => user.id === id);
 
+    const newUser = {...pastUser, weeklyCalendar: Array.from({ length: 7 }, () => []), weeklyCaloriesBurnt: 0}
+    data[indexUser] = newUser;
+    writeUserInfo(data);
+    } catch (error) {
+        console.error("reset week error, ", error);
+    }
+    
+})
 // updates a user with id
 router.patch("/updateUser", (req, res) => {
     try {

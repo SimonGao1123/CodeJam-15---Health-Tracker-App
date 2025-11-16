@@ -4,12 +4,12 @@ import workoutMETValues from './extraData/workoutMETValues.jsx';
 const defaultWeightTemplate = {
         sets: "",
         reps: "",
-        weights: "",
-        duration: "",
+        "weights (kg)": "",
+        "duration (mins)": "",
         workout_title: ""
     };
     const defaultCardioTemplate = {
-        duration: "",
+        "duration (mins)": "",
         workout_title: ""
     };
 
@@ -179,7 +179,7 @@ function DisplayCalendarSquare({
         <>
           <p>Sets: {workout.sets}</p>
           <p>Reps: {workout.reps}</p>
-          <p>Weights: {workout.weights}</p>
+          <p>Weights {workout.weights}</p>
         </>
       )}
     </div>
