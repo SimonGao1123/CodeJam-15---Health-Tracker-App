@@ -4,6 +4,8 @@ import {useEffect} from 'react'
 import workoutMETValues from './extraData/workoutMETValues.jsx' // data for wrkouts
 import WeeklyCalendar from './WeeklyCalendar.jsx';
 
+
+
 // function 
 function writeDateFile (newDate) {
     fetch("http://localhost:3000/writeDate", {
@@ -19,7 +21,7 @@ function writeDateFile (newDate) {
 }
 
 function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
-    const [currentDate, setCurrentDate] = useState();
+    const [currentDate, setCurrentDate] = useState(null);
     function getPrevTime () {
         fetch("http://localhost:3000/getDate", {
                 method: "GET",
@@ -35,7 +37,7 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         getPrevTime();
     }, [])
 
-    console.log("weekly calendar: ", userLoggedIn.weeklyCalendar);
+    // console.log("weekly calendar: ", userLoggedIn.weeklyCalendar);
     const {streak, weight, sex, age, height, weeklyCalendar} = userLoggedIn;
     
     
@@ -66,6 +68,11 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
 
     const [displayMessage, setDisplayMessage] = useState(null);
 
+    useEffect(() => {
+    if (!currentDate) return;
+    const interval = setInterval(() => updateClock(streak, weeklyCalendar, userLoggedIn), 5000);
+    return () => clearInterval(interval);
+    }, [currentDate]);
 
     function updateClock(streak, weeklyCalendar, userLoggedIn) {
         if (!currentDate) {
@@ -99,9 +106,10 @@ function UserHealthPage ({userLoggedIn, setUserLoggedIn, setDisplayLogin}) {
         );
 
         if (startWeek1.getTime() !== startWeek2.getTime()) {
+            console.log('we are here');
             StreakUpdate(streak,weeklyCalendar,userLoggedIn) // also calendar updater
         }
-
+        console.log(startWeek1, startWeek2)
         setCurrentDate(tempDate);
         writeDateFile(tempDate);
         
